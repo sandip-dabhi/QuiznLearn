@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Materials - Indian States & Capitals</title>
+     <link rel="icon" href="./assets/logo.png" type="image/png">
+    <!-- Google Fonts for kids -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Fredoka:wght@400;500;600&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Kid-friendly color palette - EXACT same as home page */
+            --primary-blue: #4A90E2;
+            --bright-green: #7ED321;
+            --sunny-yellow: #F5A623;
+            --coral-pink: #FF6B9D;
+            --light-purple: #9B59B6;
+            --sky-blue: #87CEEB;
+            --cream-bg: #FFFEF8;
+            --white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-medium: #5A6C7D;
+            --text-light: #8E9BA8;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--cream-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Floating animation background - SAME as home page */
+        .floating-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; color: var(--sunny-yellow); }
+        .floating-shape:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; color: var(--coral-pink); }
+        .floating-shape:nth-child(3) { top: 50%; left: 15%; animation-delay: 4s; color: var(--bright-green); }
+        .floating-shape:nth-child(4) { top: 70%; right: 20%; animation-delay: 1s; color: var(--light-purple); }
+        .floating-shape:nth-child(5) { top: 80%; left: 60%; animation-delay: 3s; color: var(--primary-blue); }
+        .floating-shape:nth-child(6) { top: 30%; right: 30%; animation-delay: 5s; color: var(--sky-blue); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+            75% { transform: translateY(-20px) rotate(270deg); }
+        }
+
+        /* Header with EXACT same gradient as home page */
+        .header {
+            background: linear-gradient(45deg, var(--primary-blue), var(--sky-blue), var(--bright-green), var(--sunny-yellow));
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header::before {
+            content: '🌟⭐✨🎈🎀🎁';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 2.5rem;
+            opacity: 0.2;
+            animation: slideStars 15s linear infinite;
+            white-space: nowrap;
+            line-height: 100px;
+        }
+
+        @keyframes slideStars {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            animation: bounce 2s ease infinite;
+            display: inline-block;
+        }
+        .logo-img {
+    height: 60px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) scale(1); }
+            10% { transform: translateY(-10px) scale(1.05); }
+            30% { transform: translateY(-5px) scale(1.02); }
+            60% { transform: translateY(-8px) scale(1.03); }
+        }
+
+        .tagline {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            animation: wiggle 3s ease infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1deg); }
+            75% { transform: rotate(-1deg); }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            font-family: 'Fredoka', cursive;
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-back {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-search {
+            background: linear-gradient(45deg, var(--coral-pink), var(--sunny-yellow));
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        /* Search functionality */
+        .search-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .search-input {
+            padding: 1rem 1.5rem;
+            border: 3px solid var(--bright-green);
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-family: 'Fredoka', cursive;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--coral-pink);
+            box-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* Main content container */
+        .main-content {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-intro h2 {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 3rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            animation: titleBounce 4s ease infinite;
+        }
+
+        @keyframes titleBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .page-intro p {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.4rem;
+            color: var(--text-medium);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* State entry styling - SAME as home page feature cards */
+        .state-entry {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 6s ease infinite;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .state-entry:nth-child(even) {
+            flex-direction: row-reverse;
+            animation-delay: 3s;
+        }
+
+        .state-entry::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral-pink), var(--sunny-yellow), var(--bright-green), var(--primary-blue));
+            background-size: 300% 100%;
+            animation: rainbow-border 3s linear infinite;
+        }
+
+        @keyframes rainbow-border {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .state-entry:hover {
+            transform: translateY(-15px) rotate(2deg) scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-color: var(--coral-pink);
+        }
+
+        /* MODIFIED: Remove rotation from images */
+        .state-image {
+            width: 250px;
+            height: 300px;
+            border-radius: 20px;
+            border: 4px solid var(--bright-green);
+            box-shadow: 0 6px 20px rgba(126, 211, 33, 0.3);
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .state-entry:hover .state-image {
+            transform: scale(1.05);
+            border-color: var(--coral-pink);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+        }
+
+        .state-content {
+            flex: 1;
+        }
+
+        .state-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .capital-badge {
+            background: linear-gradient(45deg, var(--sunny-yellow), var(--coral-pink));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Fredoka', cursive;
+            font-weight: 600;
+        }
+
+        .state-description {
+            color: var(--text-medium);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .state-facts {
+            background: linear-gradient(135deg, #f8f9ff, #e8f4fd);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .state-facts h4 {
+            font-family: 'Fredoka', cursive;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .state-facts ul {
+            list-style: none;
+            font-size: 0.95rem;
+            color: var(--text-medium);
+        }
+
+        .state-facts li {
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .state-facts li::before {
+            content: "✨";
+            font-size: 1rem;
+        }
+
+        /* India Map Section - using your india.png */
+        .india-map-section {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .india-map-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral-pink), var(--sunny-yellow), var(--bright-green), var(--primary-blue));
+            background-size: 300% 100%;
+            animation: rainbow-border 3s linear infinite;
+        }
+
+        .map-title {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            animation: titleBounce 4s ease infinite;
+        }
+
+        /* India Map Image styling for your india.png */
+        .india-map-img {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .india-map-img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .page-intro h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .state-entry {
+                flex-direction: column !important;
+                gap: 1.5rem;
+                padding: 2rem;
+            }
+
+            .state-image {
+                width: 100%;
+                max-width: 300px;
+                height: 200px;
+            }
+
+            .state-title {
+                font-size: 1.7rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .main-content {
+                padding: 0 1rem;
+            }
+
+            .india-map-section {
+                padding: 2rem;
+                margin-top: 3rem;
+            }
+
+            .map-title {
+                font-size: 2rem;
+            }
+
+            .india-map-img {
+                max-height: 400px;
+                width: 100%;
+            }
+        }
+
+        /* Entrance animations */
+        .state-entry {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background animations - SAME as home page -->
+    <div class="floating-background">
+        <div class="floating-shape">🗺️</div>
+        <div class="floating-shape">📚</div>
+        <div class="floating-shape">🏛️</div>
+        <div class="floating-shape">🌄</div>
+        <div class="floating-shape">🎓</div>
+        <div class="floating-shape">✨</div>
+    </div>
+
+    <!-- Header - MODIFIED to replace teacher button with search button -->
+    <header class="header">
+    <div class="header-content">
+        <h1 class="logo">
+            <img src="./assets/logo.png" alt="Logo" class="logo-img" />
+            Study Materials
+        </h1>
+        <p class="tagline">
+            Learn about Indian States & Capitals with detailed information and fun facts! 🗺️✨
+        </p>
+        <div class="hero-buttons">
+            <button class="btn btn-back" onclick="window.history.back()">
+                ← Back to Home
+            </button>
+            <button class="btn btn-search" onclick="toggleSearch()">
+                🔍 Search 
+            </button>
+        </div>
+    </div>
+</header>
+
+
+    <!-- Search Container -->
+    <div class="search-container" id="searchContainer">
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search for a state or capital..." oninput="searchStates()">
+    </div>
+
+    <!-- Main content -->
+    <main class="main-content">
+        <!-- Page Introduction -->
+        <section class="page-intro">
+            <h2>🚀 Discover Amazing Indian States!</h2>
+            <p>Learn fascinating facts about all 28 states and their capitals with fun, detailed information! 🌟</p>
+        </section>
+
+        <!-- States Container -->
+        <div class="states-container" id="statesContainer">
+              <!-- States Container -->
+        <div class="states-container" id="statesContainer">
+            <!-- Andhra Pradesh -->
+            <div class="state-entry" style="animation-delay: 0.1s;">
+                <img src="./assets/states/1.png" alt="Andhra Pradesh" class="state-image">
+                <div class="state-content">
+                    <h3 class="state-title">
+                        Andhra Pradesh
+                        <span class="capital-badge">Amaravati</span>
+                    </h3>
+                    <p class="state-description">
+                        Andhra Pradesh is a vibrant state in southeastern India, famous for its rich cultural heritage, ancient temples, and beautiful coastline along the Bay of Bengal. The capital city Amaravati is a planned modern city being developed on the banks of the Krishna River.
+                    </p>
+                    <div class="state-facts">
+                        <h4>🌟 Amazing Facts:</h4>
+                        <ul>
+                            <li>Home to the famous Tirumala Venkateswara Temple</li>
+                            <li>Known for spicy Andhra cuisine and pickles</li>
+                            <li>Birthplace of Kuchipudi classical dance form</li>
+                            <li>Major producer of rice and chilies in India</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arunachal Pradesh -->
+            <div class="state-entry" style="animation-delay: 0.2s;">
+                <img src="./assets/states/2.png" alt="Arunachal Pradesh" class="state-image">
+                <div class="state-content">
+                    <h3 class="state-title">
+                        Arunachal Pradesh
+                        <span class="capital-badge">Itanagar</span>
+                    </h3>
+                    <p class="state-description">
+                        Known as the "Land of the Rising Sun," Arunachal Pradesh is the easternmost state of India where the sun rises first. This beautiful state is characterized by snow-capped mountains, pristine valleys, and diverse tribal cultures.
+                    </p>
+                    <div class="state-facts">
+                        <h4>🌟 Amazing Facts:</h4>
+                        <ul>
+                            <li>First place in India to see sunrise</li>
+                            <li>Home to over 26 major tribes and 100+ sub-tribes</li>
+                            <li>Rich in biodiversity with rare orchids and wildlife</li>
+                            <li>Buddhism and indigenous faiths are widely practiced</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assam -->
+            <div class="state-entry" style="animation-delay: 0.3s;">
+                <img src="./assets/states/3.png" alt="Assam" class="state-image">
+                <div class="state-content">
+                    <h3 class="state-title">
+                        Assam
+                        <span class="capital-badge">Dispur</span>
+                    </h3>
+                    <p class="state-description">
+                        Assam is renowned worldwide for its tea gardens, rich wildlife, and the mighty Brahmaputra River. This northeastern state is famous for its silk production, cultural festivals, and one-horned rhinoceros.
+                    </p>
+                    <div class="state-facts">
+                        <h4>🌟 Amazing Facts:</h4>
+                        <ul>
+                            <li>Largest tea-producing state in India</li>
+                            <li>Home to the famous one-horned rhinoceros</li>
+                            <li>Kaziranga National Park is a UNESCO World Heritage Site</li>
+                            <li>Famous for Bihu festival and Assamese silk</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bihar -->
+            <div class="state-entry" style="animation-delay: 0.4s;">
+                <img src="./assets/states/4.png" alt="Bihar" class="state-image">
+                <div class="state-content">
+                    <h3 class="state-title">
+                        Bihar
+                        <span class="capital-badge">Patna</span>
+                    </h3>
+                    <p class="state-description">
+                        Bihar is one of the oldest inhabited places in the world and holds immense historical significance as the birthplace of Buddhism and Jainism. It was home to ancient universities like Nalanda and Vikramshila.
+                    </p>
+                    <div class="state-facts">
+                        <h4>🌟 Amazing Facts:</h4>
+                        <ul>
+                            <li>Birthplace of Lord Buddha and Mahavira</li>
+                            <li>Ancient Nalanda University was here</li>
+                            <li>Bodh Gaya is where Buddha attained enlightenment</li>
+                            <li>Rich in archaeological sites and monuments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chhattisgarh -->
+            <div class="state-entry" style="animation-delay: 0.5s;">
+                <img src="./assets/states/5.png" alt="Chhattisgarh" class="state-image">
+                <div class="state-content">
+                    <h3 class="state-title">
+                        Chhattisgarh
+                        <span class="capital-badge">Raipur</span>
+                    </h3>
+                    <p class="state-description">
+                        Chhattisgarh, known as the "Rice Bowl of India," is blessed with dense forests, beautiful waterfalls, and rich mineral resources. The state has a strong tribal culture and is famous for its handicrafts.
+                    </p>
+                    <div class="state-facts">
+                        <h4>🌟 Amazing Facts:</h4>
+                        <ul>
+                            <li>Called the "Rice Bowl of India"</li>
+                            <li>Rich in coal, iron ore, and limestone</li>
+                            <li>Home to many beautiful waterfalls and caves</li>
+                            <li>Famous for tribal art and handicrafts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+<div class="state-entry" style="animation-delay: 0.6s;">
+    <img src="./assets/states/6.png" alt="Goa" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Goa
+            <span class="capital-badge">Panaji</span>
+        </h2>
+        <p class="state-description">
+            Goa, India's smallest state, is famous for its pristine beaches, vibrant nightlife, and Portuguese heritage. A top tourist destination known for its relaxed vibe.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Former Portuguese colony till 1961</li>
+                <li>Known for scenic beaches and water sports</li>
+                <li>Rich in churches and Portuguese architecture</li>
+                <li>Hosts popular festivals like Carnival and Sunburn</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 0.7s;">
+    <img src="./assets/states/7.png" alt="Gujarat" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Gujarat
+            <span class="capital-badge">Gandhinagar</span>
+        </h2>
+        <p class="state-description">
+            Gujarat, known as the "Jewel of Western India," is the birthplace of Mahatma Gandhi. It's famous for business culture, textiles, and vibrant festivals like Navratri.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Leading producer of cotton and salt</li>
+                <li>Home to the Statue of Unity</li>
+                <li>Known for its rich culture and Garba dance</li>
+                <li>Birthplace of Mahatma Gandhi and Sardar Patel</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 0.8s;">
+    <img src="./assets/states/8.png" alt="Haryana" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Haryana
+            <span class="capital-badge">Chandigarh</span>
+        </h2>
+        <p class="state-description">
+            Haryana is a key agricultural state, known as the "Green Revolution State." It has a strong sports culture and shares its capital, Chandigarh, with Punjab.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Major contributor to India's food grain stock</li>
+                <li>Known for wrestling and Olympic champions</li>
+                <li>Home to Kurukshetra — site of the Mahabharata war</li>
+                <li>Rapidly growing in industrial and IT sectors</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 0.9s;">
+    <img src="./assets/states/9.png" alt="Himachal Pradesh" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Himachal Pradesh
+            <span class="capital-badge">Shimla</span>
+        </h2>
+        <p class="state-description">
+            Himachal Pradesh, meaning "Land of Snow," is known as "Dev Bhoomi" (Land of Gods). This beautiful hill state is famous for its scenic mountains, apple orchards, and adventure tourism.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Shimla was the British summer capital</li>
+                <li>Major producer of apples and hydroelectric power</li>
+                <li>Popular destination for adventure sports</li>
+                <li>Home to many ancient temples and monasteries</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+           <div class="state-entry" style="animation-delay: 1.0s;">
+    <img src="./assets/states/10.png" alt="Jharkhand" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Jharkhand
+            <span class="capital-badge">Ranchi</span>
+        </h2>
+        <p class="state-description">
+            Jharkhand, carved out of Bihar in 2000, is known for its rich mineral resources and dense forests. It is often called the "Land of Forests" and plays a crucial role in India's steel and coal industries.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Rich in minerals like coal, iron ore, and mica</li>
+                <li>Home to scenic waterfalls and wildlife sanctuaries</li>
+                <li>Ranchi is known for its pleasant weather</li>
+                <li>Birthplace of cricket icon MS Dhoni</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="state-entry" style="animation-delay: 1.1s;">
+    <img src="./assets/states/11.png" alt="Karnataka" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Karnataka
+            <span class="capital-badge">Bengaluru</span>
+        </h2>
+        <p class="state-description">
+            Karnataka is a diverse state with rich cultural heritage and technological innovation. Its capital Bengaluru is known as the "Silicon Valley of India" and is a hub for startups and IT companies.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to UNESCO site Hampi and Mysore Palace</li>
+                <li>Bengaluru is India's tech capital</li>
+                <li>Major producer of coffee and sandalwood</li>
+                <li>Birthplace of classical Carnatic music legends</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.2s;">
+    <img src="./assets/states/12.png" alt="Kerala" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Kerala
+            <span class="capital-badge">Thiruvananthapuram</span>
+        </h2>
+        <p class="state-description">
+            Kerala, known as "God's Own Country", is famous for its backwaters, beaches, Ayurveda, and literacy rate. It boasts a blend of lush landscapes and rich traditions.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Highest literacy rate in India</li>
+                <li>Famous for houseboat tourism and Kathakali dance</li>
+                <li>Birthplace of Ayurveda and traditional healing</li>
+                <li>Home to the unique snake boat races</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.3s;">
+    <img src="./assets/states/13.png" alt="Madhya Pradesh" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Madhya Pradesh
+            <span class="capital-badge">Bhopal</span>
+        </h2>
+        <p class="state-description">
+            Madhya Pradesh, located at the heart of India, is known for its wildlife sanctuaries, ancient temples, and tribal culture. The state is often referred to as the “Tiger State of India”.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to Kanha and Bandhavgarh tiger reserves</li>
+                <li>Rich in ancient rock art and caves at Bhimbetka</li>
+                <li>Khajuraho temples are a UNESCO World Heritage Site</li>
+                <li>Bhopal is known as the "City of Lakes"</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.4s;">
+    <img src="./assets/states/14.png" alt="Maharashtra" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Maharashtra
+            <span class="capital-badge">Mumbai</span>
+        </h2>
+        <p class="state-description">
+            Maharashtra is India’s economic powerhouse and home to Mumbai – the financial capital. It combines a rich Maratha heritage with modern urbanization and Bollywood glamor.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Mumbai is the heart of India’s film industry</li>
+                <li>Gateway of India and Ajanta-Ellora caves are major attractions</li>
+                <li>Leading producer of sugarcane and grapes</li>
+                <li>Pune is a major educational and tech hub</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.5s;">
+    <img src="./assets/states/15.png" alt="Manipur" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Manipur
+            <span class="capital-badge">Imphal</span>
+        </h2>
+        <p class="state-description">
+            Manipur, meaning "Land of Jewels", is known for its classical dance, vibrant culture, and serene Loktak Lake with floating islands. It is a gateway to India's northeast.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to the unique floating Keibul Lamjao National Park</li>
+                <li>Birthplace of Manipuri classical dance</li>
+                <li>Rich tradition of handloom and handicrafts</li>
+                <li>Loktak Lake is the largest freshwater lake in NE India</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.6s;">
+    <img src="./assets/states/16.png" alt="Meghalaya" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Meghalaya
+            <span class="capital-badge">Shillong</span>
+        </h2>
+        <p class="state-description">
+            Meghalaya, meaning "Abode of Clouds", is renowned for its scenic beauty, rainfall, and tribal culture. Shillong, its capital, is often called the "Scotland of the East".
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Mawsynram is the wettest place on Earth</li>
+                <li>Living root bridges are a unique feature</li>
+                <li>Shillong has a strong rock music culture</li>
+                <li>Home to beautiful waterfalls and caves</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.7s;">
+    <img src="./assets/states/17.png" alt="Mizoram" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Mizoram
+            <span class="capital-badge">Aizawl</span>
+        </h2>
+        <p class="state-description">
+            Mizoram, nestled in the hills of Northeast India, is known for its vibrant tribal culture, bamboo forests, and scenic valleys. Aizawl offers a panoramic view of the lush hills around.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>One of the most literate states in India</li>
+                <li>Bamboo is a key resource for livelihood</li>
+                <li>Celebrates unique festivals like Chapchar Kut</li>
+                <li>Beautiful landscape of hills and valleys</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.8s;">
+    <img src="./assets/states/18.png" alt="Nagaland" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Nagaland
+            <span class="capital-badge">Kohima</span>
+        </h2>
+        <p class="state-description">
+            Nagaland is known for its diverse tribal communities, rich folklore, and cultural festivals. Kohima, the capital, is a city steeped in World War II history.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to the famous Hornbill Festival</li>
+                <li>Kohima War Cemetery is a key attraction</li>
+                <li>Rich in traditional crafts and music</li>
+                <li>80% of the population belongs to tribal groups</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 1.9s;">
+    <img src="./assets/states/19.png" alt="Odisha" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Odisha
+            <span class="capital-badge">Bhubaneswar</span>
+        </h2>
+        <p class="state-description">
+            Odisha is a land of temples, classical dance, and beautiful coastline. Bhubaneswar, the capital, is known as the Temple City of India.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Famous for Konark Sun Temple and Jagannath Temple</li>
+                <li>Birthplace of Odissi classical dance</li>
+                <li>Chilika Lake is Asia’s largest coastal lagoon</li>
+                <li>Has one of India’s oldest maritime traditions</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.0s;">
+    <img src="./assets/states/20.png" alt="Punjab" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Punjab
+            <span class="capital-badge">Chandigarh</span>
+        </h2>
+        <p class="state-description">
+            Punjab, the land of five rivers, is known for its vibrant culture, agriculture, and rich Sikh heritage. Its shared capital Chandigarh is a modern planned city.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Golden Temple in Amritsar is a major spiritual site</li>
+                <li>Key contributor to India’s food grain supply</li>
+                <li>Famous for Bhangra dance and Punjabi cuisine</li>
+                <li>Chandigarh was designed by Le Corbusier</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.1s;">
+    <img src="./assets/states/21.png" alt="Rajasthan" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Rajasthan
+            <span class="capital-badge">Jaipur</span>
+        </h2>
+        <p class="state-description">
+            Rajasthan, the largest state in India, is famous for its desert landscape, royal palaces, and historical forts. Jaipur, the Pink City, is a major tourist hub.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to Thar Desert and majestic forts</li>
+                <li>Rajasthan hosts the vibrant Pushkar Fair</li>
+                <li>Jaipur is a UNESCO World Heritage City</li>
+                <li>Known for traditional crafts and textiles</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.2s;">
+    <img src="./assets/states/22.png" alt="Sikkim" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Sikkim
+            <span class="capital-badge">Gangtok</span>
+        </h2>
+        <p class="state-description">
+            Sikkim is a small Himalayan state known for its pristine landscapes, Buddhist culture, and being India's first fully organic state.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to Mt. Kanchenjunga, India's highest peak</li>
+                <li>First Indian state to become 100% organic</li>
+                <li>Known for monasteries and prayer flags</li>
+                <li>Gangtok offers stunning views and clean air</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.3s;">
+    <img src="./assets/states/23.png" alt="Tamil Nadu" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Tamil Nadu
+            <span class="capital-badge">Chennai</span>
+        </h2>
+        <p class="state-description">
+            Tamil Nadu is rich in culture, temples, and classical art forms. Chennai, its capital, is a cultural and economic hub of South India.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to ancient Dravidian temples</li>
+                <li>Birthplace of Bharatanatyam dance</li>
+                <li>Leading producer of textiles and films</li>
+                <li>Chennai has India’s second largest beach</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.4s;">
+    <img src="./assets/states/24.png" alt="Telangana" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Telangana
+            <span class="capital-badge">Hyderabad</span>
+        </h2>
+        <p class="state-description">
+            Telangana, India’s youngest state formed in 2014, blends ancient heritage with modern tech. Its capital Hyderabad is known for biryani, pearls, and IT.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to Charminar and Golconda Fort</li>
+                <li>Hyderabad is a major IT and pharma hub</li>
+                <li>Birthplace of famous Deccani cuisine</li>
+                <li>Ramoji Film City is the world’s largest studio</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.5s;">
+    <img src="./assets/states/25.png" alt="Tripura" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Tripura
+            <span class="capital-badge">Agartala</span>
+        </h2>
+        <p class="state-description">
+            Tripura, one of the smallest states in India, is rich in tribal culture, bamboo handicrafts, and lush green landscapes. Agartala is the second-largest city in Northeast India.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Famous for Ujjayanta Palace and Neermahal</li>
+                <li>Known for bamboo and cane crafts</li>
+                <li>Over 60% of the area is forest-covered</li>
+                <li>Celebrates unique tribal festivals</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.6s;">
+    <img src="./assets/states/26.png" alt="Uttar Pradesh" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Uttar Pradesh
+            <span class="capital-badge">Lucknow</span>
+        </h2>
+        <p class="state-description">
+            Uttar Pradesh, India's most populous state, is known for its spiritual, historical, and cultural significance. Lucknow is famous for its Nawabi elegance and heritage.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to the Taj Mahal and Varanasi</li>
+                <li>Major center for politics and administration</li>
+                <li>Rich in classical music, dance, and poetry</li>
+                <li>Birthplace of Ramayana and Mahabharata stories</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.7s;">
+    <img src="./assets/states/27.png" alt="Uttarakhand" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            Uttarakhand
+            <span class="capital-badge">Dehradun</span>
+        </h2>
+        <p class="state-description">
+            Uttarakhand is a Himalayan state known as "Devbhumi" or the Land of Gods. It is famous for pilgrimage sites, scenic beauty, and adventure tourism.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Home to Kedarnath and Badrinath temples</li>
+                <li>Major center for yoga and wellness</li>
+                <li>Rich in biodiversity and national parks</li>
+                <li>Dehradun is a historic and educational city</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="state-entry" style="animation-delay: 2.8s;">
+    <img src="./assets/states/28.png" alt="West Bengal" class="state-image">
+    <div class="state-content">
+        <h2 class="state-title">
+            West Bengal
+            <span class="capital-badge">Kolkata</span>
+        </h2>
+        <p class="state-description">
+            West Bengal, with a rich literary and cultural heritage, is known for its art, architecture, and cuisine. Kolkata, the capital, was once the capital of British India.
+        </p>
+        <div class="state-facts">
+            <h4>🌟 Amazing Facts:</h4>
+            <ul>
+                <li>Birthplace of Rabindranath Tagore</li>
+                <li>Famous for Durga Puja and sweets like rasgulla</li>
+                <li>Darjeeling tea is world-famous</li>
+                <li>Home to the iconic Howrah Bridge</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+
+        <!-- India Map Section at the end using your india.png -->
+        <section class="india-map-section">
+            <h2 class="map-title">🗺️ Map of India</h2>
+            <img src="./assets/states/india.png" alt="India Map with States and Capitals" class="india-map-img" />
+        </section>
+    </main>
+
+    <script>
+        // Search functionality
+        function toggleSearch() {
+            const searchContainer = document.getElementById('searchContainer');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (searchContainer.style.display === 'none' || !searchContainer.style.display) {
+                searchContainer.style.display = 'block';
+                searchInput.focus();
+            } else {
+                searchContainer.style.display = 'none';
+                searchInput.value = '';
+                showAllStates();
+            }
+        }
+
+        function searchStates() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const stateEntries = document.querySelectorAll('.state-entry');
+            
+            stateEntries.forEach(entry => {
+                const stateName = entry.querySelector('.state-title').textContent.toLowerCase();
+                if (stateName.includes(searchTerm)) {
+                    entry.style.display = 'flex';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+
+        function showAllStates() {
+            const stateEntries = document.querySelectorAll('.state-entry');
+            stateEntries.forEach(entry => {
+                entry.style.display = 'flex';
+            });
+        }
+
+        // Add entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.state-entry');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = 'all 0.8s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+
+        // Add random color changes to floating shapes
+        setInterval(() => {
+            document.querySelectorAll('.floating-shape').forEach(shape => {
+                const colors = ['var(--coral-pink)', 'var(--sunny-yellow)', 'var(--bright-green)', 'var(--sky-blue)', 'var(--light-purple)'];
+                shape.style.color = colors[Math.floor(Math.random() * colors.length)];
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
