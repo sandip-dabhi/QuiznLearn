@@ -1,596 +1,1026 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login | QuiznLearn - Interactive States & Capitals Quiz
-            Platform</title>
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet">
-        <style>
-        /* Global Styles - Consistent with home.html */
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiznLearn Teacher - Login & Register</title>
+        <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Fredoka:wght@400;500;600&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
         :root {
-            --primary: #5E81F4;
-            --primary-light: #7D9DF7;
-            --secondary: #FF7B7B;
-            --accent: #4DCFC0;
-            --light: #F6F9FF;
-            --dark: #1A1D28;
-            --gray: #6E6E7A;
-            --light-gray: #E5E5E5;
-            --radius: 16px;
-            --shadow: 0 10px 30px rgba(94, 129, 244, 0.1);
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Matching colors from your QuiznLearn theme */
+            --primary-blue: #4A90E2;
+            --bright-green: #7ED321;
+            --sunny-yellow: #F5A623;
+            --coral-pink: #FF6B9D;
+            --light-purple: #9B59B6;
+            --sky-blue: #87CEEB;
+            --cream-bg: #FFFEF8;
+            --white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-medium: #5A6C7D;
+            --text-light: #8E9BA8;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --danger: #E74C3C;
+            --success: #27AE60;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Nunito', sans-serif;
+            background: var(--cream-bg);
+            color: var(--text-dark);
             line-height: 1.6;
-            color: var(--dark);
-            background-color: var(--light);
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
-        
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
+
+        /* Animated background matching home page */
+        .floating-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
         }
-        
-        p {
-            margin-bottom: 1.5rem;
-            color: var(--gray);
-            font-weight: 400;
+
+        .floating-shape {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.2;
+            animation: float 12s ease-in-out infinite;
         }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
+
+        .floating-shape:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; color: var(--sunny-yellow); }
+        .floating-shape:nth-child(2) { top: 15%; right: 10%; animation-delay: 3s; color: var(--coral-pink); }
+        .floating-shape:nth-child(3) { top: 40%; left: 15%; animation-delay: 6s; color: var(--bright-green); }
+        .floating-shape:nth-child(4) { top: 60%; right: 20%; animation-delay: 2s; color: var(--light-purple); }
+        .floating-shape:nth-child(5) { top: 75%; left: 60%; animation-delay: 8s; color: var(--primary-blue); }
+        .floating-shape:nth-child(6) { top: 25%; right: 30%; animation-delay: 10s; color: var(--sky-blue); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+            75% { transform: translateY(-20px) rotate(270deg); }
         }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+
+        /* Main container */
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
-        
-        section {
-            padding: 100px 0;
+
+        .auth-container {
+            background: var(--white);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px var(--shadow);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
             position: relative;
         }
-        
-        .btn {
+
+        /* Header section */
+        .header-section {
+            background: linear-gradient(45deg, var(--primary-blue), var(--sky-blue), var(--bright-green), var(--sunny-yellow));
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-section::before {
+            content: '🌟⭐✨🎈🎀🎁';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 2rem;
+            opacity: 0.2;
+            animation: slideStars 15s linear infinite;
+            white-space: nowrap;
+            line-height: 100px;
+        }
+
+        @keyframes slideStars {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            animation: bounce 2s ease infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) scale(1); }
+            10% { transform: translateY(-10px) scale(1.05); }
+            30% { transform: translateY(-5px) scale(1.02); }
+            60% { transform: translateY(-8px) scale(1.03); }
+        }
+
+        .tagline {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Form section */
+        .form-section {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .form-toggle {
+            display: flex;
+            background: var(--cream-bg);
+            border-radius: 25px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .toggle-btn.active {
+            color: white;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--coral-pink), var(--light-purple));
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .toggle-slider.register {
+            transform: translateX(100%);
+        }
+
+        /* Form styles */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: formSlideIn 0.5s ease;
+        }
+
+        @keyframes formSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            font-family: 'Fredoka', cursive;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 3px solid var(--text-light);
+            border-radius: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--cream-bg);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: var(--white);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+        }
+
+        .form-input.error {
+            border-color: var(--danger);
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            transform: scale(1.2);
+            accent-color: var(--primary-blue);
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--success), var(--bright-green));
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 30px rgba(39, 174, 96, 0.3);
+            margin-top: 1rem;
+            animation: submitPulse 3s ease infinite;
+        }
+
+        @keyframes submitPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(39, 174, 96, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Form navigation links at bottom */
+        .form-navigation {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--cream-bg);
+        }
+
+        .nav-text {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 16px 36px;
-            border-radius: 50px;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .nav-link:hover {
+            color: var(--coral-pink);
+            background: rgba(255, 107, 157, 0.1);
+            transform: translateY(-2px) scale(1.05);
+            text-decoration: none;
+        }
+
+        .home-link {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(45deg, var(--sunny-yellow), var(--coral-pink));
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-family: 'Fredoka', cursive;
             font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-            will-change: transform;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            box-shadow: 0 10px 20px rgba(94, 129, 244, 0.3);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-light);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(94, 129, 244, 0.4);
-        }
-        
-        .btn-secondary {
-            background-color: var(--secondary);
-            color: white;
-            box-shadow: 0 10px 20px rgba(255, 123, 123, 0.3);
-        }
-        
-        .btn-secondary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(255, 123, 123, 0.4);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        header {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            width: 100%;
-            top: 0;
+            transition: all 0.3s ease;
             z-index: 1000;
-            transition: var(--transition);
-        }
-        
-        header.scrolled {
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        /* Logo */
-        .logo {
             display: flex;
             align-items: center;
-            text-decoration: none;
-            color: var(--dark);
-            font-size: 1.6rem;
-            font-weight: bold;
+            gap: 0.5rem;
+            animation: homeFloat 4s ease infinite;
         }
-        
-        .logo-img {
-            width: 52px;
-            height: 58px;
-            margin-right: 10px;
-            background-color: var(--primary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        @keyframes homeFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .home-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, var(--success), var(--bright-green));
             color: white;
-            font-size: 1.8rem;
-        }
-        
-        .menu {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .menu a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            padding: 8px 0;
-        }
-        
-        .menu a:hover {
-            color: var(--primary);
-        }
-        
-        .menu a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            background: var(--primary);
-            bottom: 0;
-            left: 0;
-            transition: var(--transition);
-            border-radius: 3px;
-        }
-        
-        .menu a:hover:after {
-            width: 100%;
-        }
-        
-        .auth-btns {
-            display: flex;
-            gap: 15px;
-        }
-        .login-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 120px 0 80px;
-            background: linear-gradient(135deg, #F6F9FF 0%, #E8EEFF 100%);
-        }
-        
-        .login-container {
-            display: flex;
-            max-width: 1000px;
-            width: 100%;
-            background-color: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-        
-        .login-image {
-    flex: 1;
-    background: linear-gradient(135deg, var(--primary) 0%, #6CE5D5 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-   color: var(--dark);
-    position: relative;
-    overflow: hidden;
-}
-
-.login-image:before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    animation: rotate 20s linear infinite;
-    z-index: 0;
-}
-
-.login-image-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-}
-
-.logo-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.logo-block img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.logo-block h2 {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1.6rem;
-}
-
-.login-image-content h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-}
-
-.login-image-content p {
-    color: var(--gray);
-    font-size: 1.1rem;
-}
-
-.login-form {
-    flex: 1;
-    padding: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.login-form h1 {
-    font-size: 2.5rem;
-    color: var(--dark);
-    margin-bottom: 10px;
-}
-
-.login-form h1 span {
-    color: var(--primary);
-}
-
-.login-form p {
-    margin-bottom: 30px;
-    color: var(--gray);
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-        
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid var(--light-gray);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: var(--transition);
-            background-color: var(--light);
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(94, 129, 244, 0.2);
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 42px;
-            cursor: pointer;
-            color: var(--gray);
-        }
-        
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .remember-me input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-        }
-        
-        .forgot-password {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-        
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 16px;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        
-       
-        
-        .signup-link {
+            padding: 2rem;
+            border-radius: 20px;
             text-align: center;
-            margin-top: 20px;
-            color: var(--gray);
+            margin-bottom: 2rem;
+            animation: successSlideIn 0.5s ease;
         }
-        
-        .signup-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
+
+        .success-message.show {
+            display: block;
         }
-        
-        .signup-link a:hover {
-            text-decoration: underline;
+
+        @keyframes successSlideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: successBounce 1s ease infinite;
         }
-        
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .login-container {
-                flex-direction: column;
-                max-width: 600px;
-            }
-            
-            .login-image {
-                padding: 30px;
-            }
-            
-            .login-form {
-                padding: 40px;
-            }
+
+        @keyframes successBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-8px); }
         }
-        
+
+        /* Responsive design */
         @media (max-width: 768px) {
-            .login-form {
-                padding: 30px;
+            .auth-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
             }
-            
-            .login-form h1 {
+
+            .header-section {
+                padding: 2rem;
+                order: 1;
+            }
+
+            .form-section {
+                padding: 2rem;
+                order: 2;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .home-link {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .auth-container {
+                min-height: auto;
+            }
+
+            .header-section {
+                padding: 1.5rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .logo {
                 font-size: 2rem;
             }
-            
-            .social-login {
-                flex-direction: column;
-            }
-            
-            .nav {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px 0;
-            }
-            
-            .menu {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .auth-btns {
-                justify-content: center;
-                width: 100%;
-                flex-wrap: wrap;
-            }
         }
-        
-        @media (max-width: 480px) {
-            .login-form {
-                padding: 25px 20px;
-            }
-            
-            .remember-forgot {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
+
+        /* Loading animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--text-light);
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
-    </head>
-    <body>
-        <!-- Header -->
-        <header id="header">
-            <div class="container">
-                <nav class="nav">
-                    <a href="home.html" class="logo">
-                        <img src="./assets/logo1.png" alt="QuiznLearn Logo"
-                            style="width: 40px; height: 40px; margin-right: 10px;">
-                        <span>QuiznLearn</span>
-                    </a>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="floating-background">
+        <div class="floating-shape">🎓</div>
+        <div class="floating-shape">📚</div>
+        <div class="floating-shape">🗺️</div>
+        <div class="floating-shape">⭐</div>
+        <div class="floating-shape">🎯</div>
+        <div class="floating-shape">🏆</div>
+    </div>
 
-                   <div class="menu">
-                        <a href="home.html">Home</a>
-                        <a href="quiz.html">Quizzes</a>
-                        <a href="teacher.html">For Teachers</a>
-                        <a href="student.html">For Students</a>
-                        <a href="contact.html">Contact</a>
-                    </div>
-                    <div class="auth-btns">
-                        <a href="login.html" class="btn btn-outline">Login</a>
-                        <a href="signup.html" class="btn btn-primary">Sign
-                            Up</a>
-                    </div>
-                </nav>
-            </div>
-        </header>
+    <!-- Home link -->
+    <a href="home.html" class="home-link">
+        <i class="fas fa-home"></i>
+        Back to Home
+    </a>
 
-        <!-- Login Section -->
-        <section class="login-section">
-            <div class="login-container">
-                <div class="login-image">
-                    <div class="login-image-content">
-                        <div class="logo-block">
-                            <img src="./assets/logo-nobg.png"
-                                alt="QuiznLearn Logo" />
-                            <h2>QuiznLearn</h2>
-                        </div>
-                      <h2>Welcome Back!</h2>
-<p>
-  Log in to continue your learning journey with QuiznLearn. 
-  Access personalized quizzes, track your progress, and stay ahead in mastering Indian states and capitals.
-</p>
+    <div class="main-container">
+        <div class="auth-container">
+            <!-- Header Section -->
+           <div class="header-section">
+    <div class="logo">
+        <img src="./assets/logo.png" alt="QuiznLearn Logo" class="logo-img" style="height: 40px; vertical-align: middle;">
+        <span style="font-size: 24px; font-weight: bold; margin-left: 10px;">QuiznLearn</span>
+    </div>
+    <div class="tagline">Making Geography Learning Fun for Kids! 🌍</div>
+    <div class="welcome-text">
+        Welcome amazing teachers! Join our platform to create exciting quizzes about Indian States & Capitals that make learning an adventure for your students.
+    </div>
+</div>
 
-                    </div>
+
+            <!-- Form Section -->
+            <div class="form-section">
+                <!-- Toggle buttons -->
+                <div class="form-toggle">
+                    <button class="toggle-btn active" onclick="showLogin()">Login</button>
+                    <button class="toggle-btn" onclick="showRegister()">Register</button>
+                    <div class="toggle-slider" id="toggleSlider"></div>
                 </div>
-                <div class="login-form">
-                    <h1>Login to <span>QuiznLearn</span></h1>
-                    <p>Enter your credentials to access your personalized
-                        dashboard.</p>
 
-                    <form action="#" method="POST">
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control"
-                                placeholder="Enter your email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password"
-                                class="form-control"
-                                placeholder="Enter your password" required>
-                            <i class="fas fa-eye password-toggle"
-                                id="togglePassword"></i>
-                        </div>
-
-                        <div class="remember-forgot">
-                            <div class="remember-me">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">Remember me</label>
-                            </div>
-
-                        </div>
-
-                        <button type="submit"
-                            class="btn btn-primary login-btn">Login</button>
-
-                        <div class="signup-link">
-                            Don't have an account? <a href="signup.html">Sign
-                                up here</a>
-                        </div>
-                    </form>
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message">
+                    <div class="success-icon">🎉</div>
+                    <h3>Success!</h3>
+                    <p id="successText"></p>
                 </div>
-            </div>
-        </section>
 
-        <script>
-        // Header scroll effect - Consistent with home.html
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+                <!-- Loading -->
+                <div id="loadingDiv" class="loading">
+                    <div class="spinner"></div>
+                    <p>Processing your request...</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active">
+                    <h2 class="form-title">👩‍🏫 Teacher Login</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">👤 Username</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="Enter your username" required>
+                        <div class="error-message" id="loginUsernameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🔒 Password</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me for next time</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login to Dashboard
+                    </button>
+
+                    <!-- Navigation to Register -->
+                    <div class="form-navigation">
+                        <div class="nav-text">Don't have an account yet?</div>
+                        <a href="#" class="nav-link" onclick="showRegister(); return false;">
+                            <i class="fas fa-user-plus"></i>
+                            Create Teacher Account
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Registration Form -->
+                <form id="registerForm" class="auth-form">
+                    <h2 class="form-title">👩‍🏫 Teacher Registration</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">👤 Username</label>
+                        <input type="text" class="form-input" id="registerUsername" placeholder="Choose a unique username" required>
+                        <div class="error-message" id="registerUsernameError"></div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">👤 First Name</label>
+                            <input type="text" class="form-input" id="registerFirstName" placeholder="Your first name" required>
+                            <div class="error-message" id="registerFirstNameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">👤 Last Name</label>
+                            <input type="text" class="form-input" id="registerLastName" placeholder="Your last name" required>
+                            <div class="error-message" id="registerLastNameError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">📧 Email Address</label>
+                        <input type="email" class="form-input" id="registerEmail" placeholder="Your professional email address" required>
+                        <div class="error-message" id="registerEmailError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">📞 Phone Number</label>
+                            <input type="tel" class="form-input" id="registerPhone" placeholder="Your contact number" required>
+                            <div class="error-message" id="registerPhoneError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">🏫 School Name</label>
+                            <input type="text" class="form-input" id="registerSchool" placeholder="Your school name" required>
+                            <div class="error-message" id="registerSchoolError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🎓 Teaching Experience</label>
+                        <select class="form-input" id="registerExperience" required>
+                            <option value="">Years of experience</option>
+                            <option value="0-1">0-1 years</option>
+                            <option value="2-5">2-5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="11-15">11-15 years</option>
+                            <option value="15+">15+ years</option>
+                        </select>
+                        <div class="error-message" id="registerExperienceError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">🔒 Password</label>
+                            <input type="password" class="form-input" id="registerPassword" placeholder="Create a strong password" required>
+                            <div class="error-message" id="registerPasswordError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">🔒 Confirm Password</label>
+                            <input type="password" class="form-input" id="registerConfirmPassword" placeholder="Confirm your password" required>
+                            <div class="error-message" id="registerConfirmPasswordError"></div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <label for="agreeTerms">I agree to the <a href="#" style="color: var(--primary-blue);">Terms & Conditions</a> and <a href="#" style="color: var(--primary-blue);">Privacy Policy</a></label>
+                        <div class="error-message" id="agreeTermsError"></div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Teacher Account
+                    </button>
+
+                    <!-- Navigation to Login -->
+                    <div class="form-navigation">
+                        <div class="nav-text">Already have an account?</div>
+                        <a href="#" class="nav-link" onclick="showLogin(); return false;">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form switching functionality
+        function showLogin() {
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('toggleSlider').classList.remove('register');
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
+            hideMessages();
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').classList.add('active');
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('toggleSlider').classList.add('register');
+            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
+            hideMessages();
+        }
+
+        function hideMessages() {
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('loadingDiv').style.display = 'none';
+            clearErrors();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.classList.remove('error');
+            });
+        }
+
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errorDiv = document.getElementById(inputId + 'Error');
+            
+            input.classList.add('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function showSuccess(message) {
+            document.getElementById('successText').textContent = message;
+            document.getElementById('successMessage').classList.add('show');
+        }
+
+        function showLoading() {
+            document.getElementById('loadingDiv').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingDiv').style.display = 'none';
+        }
+
+        // Validation functions
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePassword(password) {
+            return password.length >= 8;
+        }
+
+        function validatePhone(phone) {
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            return phoneRegex.test(phone.replace(/\s|-/g, ''));
+        }
+
+        function validateUsername(username) {
+            // Username should be 3-20 characters, alphanumeric and underscores only
+            const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+            return usernameRegex.test(username);
+        }
+
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            clearErrors();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            let isValid = true;
+            
+            // Username validation
+            if (!username) {
+                showError('loginUsername', 'Please enter your username');
+                isValid = false;
+            } else if (!validateUsername(username)) {
+                showError('loginUsername', 'Username must be 3-20 characters (letters, numbers, underscore only)');
+                isValid = false;
+            }
+            
+            // Password validation
+            if (!password) {
+                showError('loginPassword', 'Please enter your password');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                showLoading();
+                
+                // Simulate login process
+                setTimeout(() => {
+                    hideLoading();
+                    
+                    // Check if it's a demo login
+                    if (username === 'demo_teacher' && password === 'demo123') {
+                        showSuccess('🎉 Login successful! Redirecting to your dashboard...');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'teacher-dashboard.html';
+                        }, 2000);
+                    } else {
+                        showSuccess('🎉 Login successful! Welcome back to QuiznLearn!');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'teacher-dashboard.html';
+                        }, 2000);
+                    }
+                }, 2000);
             }
         });
-        
-        // Password toggle functionality
-        const togglePassword = document.getElementById('togglePassword');
-        const password = document.getElementById('password');
-        
-        togglePassword.addEventListener('click', function() {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
-        });
-        
-        // Form submission (would be replaced with actual form handling in production)
-        const form = document.querySelector('form');
-        form.addEventListener('submit', function(e) {
+
+        // Registration form handling
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Here you would typically handle the form submission with AJAX or similar
-            alert('Login functionality would be implemented here in a production environment');
-            // For demo purposes, redirect to home after "login"
-            window.location.href = 'home.html';
+            clearErrors();
+            
+            const username = document.getElementById('registerUsername').value.trim();
+            const firstName = document.getElementById('registerFirstName').value.trim();
+            const lastName = document.getElementById('registerLastName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const school = document.getElementById('registerSchool').value.trim();
+            const experience = document.getElementById('registerExperience').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            let isValid = true;
+            
+            // Username validation
+            if (!username) {
+                showError('registerUsername', 'Please choose a username');
+                isValid = false;
+            } else if (!validateUsername(username)) {
+                showError('registerUsername', 'Username must be 3-20 characters (letters, numbers, underscore only)');
+                isValid = false;
+            }
+            
+            // First name validation
+            if (!firstName) {
+                showError('registerFirstName', 'Please enter your first name');
+                isValid = false;
+            } else if (firstName.length < 2) {
+                showError('registerFirstName', 'First name must be at least 2 characters');
+                isValid = false;
+            }
+            
+            // Last name validation
+            if (!lastName) {
+                showError('registerLastName', 'Please enter your last name');
+                isValid = false;
+            } else if (lastName.length < 2) {
+                showError('registerLastName', 'Last name must be at least 2 characters');
+                isValid = false;
+            }
+            
+            // Email validation
+            if (!email) {
+                showError('registerEmail', 'Please enter your email address');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('registerEmail', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Phone validation
+            if (!phone) {
+                showError('registerPhone', 'Please enter your phone number');
+                isValid = false;
+            } else if (!validatePhone(phone)) {
+                showError('registerPhone', 'Please enter a valid phone number');
+                isValid = false;
+            }
+            
+            // School validation
+            if (!school) {
+                showError('registerSchool', 'Please enter your school name');
+                isValid = false;
+            }
+            
+            // Experience validation
+            if (!experience) {
+                showError('registerExperience', 'Please select your teaching experience');
+                isValid = false;
+            }
+            
+            // Password validation
+            if (!password) {
+                showError('registerPassword', 'Please create a password');
+                isValid = false;
+            } else if (!validatePassword(password)) {
+                showError('registerPassword', 'Password must be at least 8 characters long');
+                isValid = false;
+            }
+            
+            // Confirm password validation
+            if (!confirmPassword) {
+                showError('registerConfirmPassword', 'Please confirm your password');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('registerConfirmPassword', 'Passwords do not match');
+                isValid = false;
+            }
+            
+            // Terms agreement validation
+            if (!agreeTerms) {
+                showError('agreeTerms', 'Please agree to the Terms & Conditions');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                showLoading();
+                
+                // Simulate registration process
+                setTimeout(() => {
+                    hideLoading();
+                    showSuccess('🎉 Registration successful! Your teacher account has been created. You can now login with your username and password.');
+                    
+                    // Reset form
+                    document.getElementById('registerForm').reset();
+                    
+                    // Auto-switch to login after success
+                    setTimeout(() => {
+                        showLogin();
+                        document.getElementById('loginUsername').value = username;
+                    }, 3000);
+                }, 3000);
+            }
+        });
+
+        // Add sparkle effects
+        function createSparkles(element) {
+            for(let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.innerHTML = '✨';
+                    sparkle.style.position = 'absolute';
+                    sparkle.style.left = Math.random() * element.offsetWidth + 'px';
+                    sparkle.style.top = Math.random() * element.offsetHeight + 'px';
+                    sparkle.style.pointerEvents = 'none';
+                    sparkle.style.fontSize = '1.5rem';
+                    sparkle.style.animation = 'sparkleFloat 2s ease forwards';
+                    sparkle.style.zIndex = '10';
+                    
+                    element.style.position = 'relative';
+                    element.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 2000);
+                }, i * 300);
+            }
+        }
+
+        // Add sparkle animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkleFloat {
+                0% { transform: translateY(0px) scale(0); opacity: 1; }
+                50% { transform: translateY(-20px) scale(1); opacity: 1; }
+                100% { transform: translateY(-40px) scale(0); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add sparkle effects on form interaction
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtns = document.querySelectorAll('.submit-btn');
+            submitBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    createSparkles(this);
+                });
+            });
+
+            // Add sparkle effects to navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    createSparkles(this);
+                });
+            });
+        });
+
+        // Auto-resize textareas and add interaction effects
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
         });
     </script>
-    </body>
+</body>
 </html>
