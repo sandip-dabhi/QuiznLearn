@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiznLearn Teacher Dashboard</title>
+       <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Fredoka:wght@400;500;600&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Matching colors from home.html */
+            --primary-blue: #4A90E2;
+            --bright-green: #7ED321;
+            --sunny-yellow: #F5A623;
+            --coral-pink: #FF6B9D;
+            --light-purple: #9B59B6;
+            --sky-blue: #87CEEB;
+            --cream-bg: #FFFEF8;
+            --white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-medium: #5A6C7D;
+            --text-light: #8E9BA8;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --danger: #E74C3C;
+            --success: #27AE60;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--cream-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Animated background matching home page */
+        .floating-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.2;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; color: var(--sunny-yellow); }
+        .floating-shape:nth-child(2) { top: 15%; right: 10%; animation-delay: 3s; color: var(--coral-pink); }
+        .floating-shape:nth-child(3) { top: 40%; left: 15%; animation-delay: 6s; color: var(--bright-green); }
+        .floating-shape:nth-child(4) { top: 60%; right: 20%; animation-delay: 2s; color: var(--light-purple); }
+        .floating-shape:nth-child(5) { top: 75%; left: 60%; animation-delay: 8s; color: var(--primary-blue); }
+        .floating-shape:nth-child(6) { top: 25%; right: 30%; animation-delay: 10s; color: var(--sky-blue); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+            75% { transform: translateY(-20px) rotate(270deg); }
+        }
+
+        /* Top header bar - Fixed width control */
+        .top-header {
+            background: linear-gradient(45deg, var(--primary-blue), var(--sky-blue), var(--bright-green), var(--sunny-yellow));
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .top-header-content {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .top-header::before {
+            content: '⭐🎓📚✨🎯🏆';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 1.5rem;
+            opacity: 0.1;
+            animation: slideStars 20s linear infinite;
+            white-space: nowrap;
+            line-height: 80px;
+        }
+
+        @keyframes slideStars {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dashboard-logo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.8rem;
+            animation: bounce 3s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .teacher-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--coral-pink), var(--light-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Sidebar - Fixed width and responsive */
+        .sidebar {
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: var(--white);
+            position: fixed;
+            left: 0;
+            top: 80px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 15px var(--shadow);
+            border-radius: 0 20px 20px 0;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem 1rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bright-green), var(--success));
+            color: white;
+        }
+
+        .sidebar-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            color: var(--text-medium);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 0 25px 25px 0;
+            margin: 0.2rem 0;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, var(--primary-blue), var(--sky-blue));
+            color: white;
+            transform: translateX(10px);
+            border-left-color: var(--sunny-yellow);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, var(--coral-pink), var(--light-purple));
+            color: white;
+            border-left-color: var(--sunny-yellow);
+            animation: menuPulse 2s ease infinite;
+        }
+
+        @keyframes menuPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 157, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 107, 157, 0); }
+        }
+
+        .menu-item i {
+            margin-right: 1rem;
+            font-size: 1.3rem;
+            width: 25px;
+        }
+
+        /* Logout button in sidebar */
+        .logout-btn {
+            position: absolute;
+            bottom: 2rem;
+            left: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--danger), #C0392B);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Fredoka', cursive;
+            font-size: 1rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .logout-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Main content - Fixed width controls */
+        .main-content {
+            margin-left: 280px;
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            width: calc(100vw - 280px);
+            max-width: calc(100vw - 280px);
+            box-sizing: border-box;
+        }
+
+        /* Page container for consistent width */
+        .page-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Dashboard-specific welcome card and stats - Only show in dashboard */
+        .dashboard-only {
+            display: none;
+        }
+
+        .dashboard-only.show {
+            display: block;
+        }
+
+        /* Welcome card with proper width constraint - ONLY FOR DASHBOARD */
+        .welcome-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 25px;
+            box-shadow: 0 8px 30px var(--shadow);
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(126, 211, 33, 0.1));
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .welcome-card::before {
+            content: '🌟';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            animation: quickBtnFloat 6s ease infinite;
+        }
+
+        @keyframes quickBtnFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .quick-btn:nth-child(odd) {
+            animation-delay: 3s;
+        }
+
+        .quick-btn.primary {
+            background: linear-gradient(45deg, var(--coral-pink), var(--light-purple));
+            color: white;
+        }
+
+        .quick-btn.secondary {
+            background: linear-gradient(45deg, var(--bright-green), var(--success));
+            color: white;
+        }
+
+        .quick-btn.tertiary {
+            background: linear-gradient(45deg, var(--sunny-yellow), var(--primary-blue));
+            color: white;
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Dashboard stats cards - Controlled width - ONLY FOR DASHBOARD */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--shadow);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+            animation: cardFloat 8s ease infinite;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stat-card:nth-child(even) {
+            animation-delay: 4s;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--coral-pink), var(--sunny-yellow), var(--bright-green), var(--primary-blue));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-color: var(--primary-blue);
+        }
+
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            animation: iconSpin 10s linear infinite;
+        }
+
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stat-number {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-blue), var(--bright-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-family: 'Fredoka', cursive;
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Content sections - Fixed width */
+        .content-section {
+            display: none;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 8px 30px var(--shadow);
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: sectionFadeIn 0.6s ease;
+        }
+
+        @keyframes sectionFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: titleGlow 3s ease infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+            50% { text-shadow: 0 0 20px rgba(74, 144, 226, 0.6), 2px 2px 4px rgba(0,0,0,0.1); }
+        }
+
+        /* Enhanced Profile Section */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-left {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(126, 211, 33, 0.1));
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--coral-pink), var(--light-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            animation: profilePulse 3s ease infinite;
+            position: relative;
+            cursor: pointer;
+        }
+
+        @keyframes profilePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--sunny-yellow);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload:hover {
+            transform: scale(1.1);
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .profile-name {
+            font-family: 'Fredoka', cursive;
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title {
+            color: var(--text-medium);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .profile-stat {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .profile-stat-number {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .profile-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            margin-top: 0.2rem;
+        }
+
+        /* Enhanced Profile Form */
+        .profile-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.4rem;
+            color: var(--coral-pink);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--coral-pink);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-family: 'Fredoka', cursive;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--cream-bg);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: var(--white);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.2);
+        }
+
+        .textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--sky-blue));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, var(--bright-green), var(--success));
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, var(--danger), #C0392B);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Create Quiz Section - Constrained width */
+        .creation-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .creation-card {
+            background: linear-gradient(135deg, var(--primary-blue), var(--sky-blue));
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 30px rgba(74, 144, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .creation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(255,255,255,0.1), transparent);
+            animation: cardRotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .creation-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes cardRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .creation-card.ai-option {
+            background: linear-gradient(135deg, var(--bright-green), var(--success));
+            box-shadow: 0 8px 30px rgba(126, 211, 33, 0.3);
+        }
+
+        .creation-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .creation-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: creationIconBounce 3s ease infinite;
+        }
+
+        @keyframes creationIconBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .creation-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .creation-desc {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Quiz types grid - Controlled width */
+        .quiz-types-container {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(155, 89, 182, 0.1));
+            border-radius: 20px;
+            border: 2px dashed var(--coral-pink);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .quiz-types-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.8rem;
+            color: var(--coral-pink);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .quiz-type-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 3px solid var(--text-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .quiz-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .quiz-type-card:hover::before {
+            left: 100%;
+        }
+
+        .quiz-type-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .quiz-type-card.selected {
+            border-color: var(--success);
+            background: rgba(39, 174, 96, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .quiz-type-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-type-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            animation: typeIconWiggle 4s ease infinite;
+        }
+
+        @keyframes typeIconWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        .quiz-type-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+        }
+
+        /* Form styling - Fixed width */
+        .quiz-form {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--cream-bg);
+            border-radius: 20px;
+            border: 3px solid var(--sunny-yellow);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .quiz-form.active {
+            display: block;
+            animation: formSlideIn 0.6s ease;
+        }
+
+        @keyframes formSlideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 2rem;
+            color: var(--sunny-yellow);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Indian States Section */
+        .states-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 20px;
+            border: 3px solid var(--bright-green);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .states-title {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.8rem;
+            color: var(--bright-green);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .states-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Fredoka', cursive;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn.all {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .control-btn.clear {
+            background: var(--danger);
+            color: white;
+        }
+
+        .control-btn.north {
+            background: var(--sunny-yellow);
+            color: var(--text-dark);
+        }
+
+        .control-btn.south {
+            background: var(--coral-pink);
+            color: white;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .state-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            background: var(--cream-bg);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .state-item:hover {
+            background: var(--white);
+            border-color: var(--primary-blue);
+            transform: scale(1.02);
+        }
+
+        .state-checkbox {
+            margin-right: 0.8rem;
+            transform: scale(1.3);
+            accent-color: var(--success);
+        }
+
+        .state-label {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* Submit button */
+        .submit-container {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+        }
+
+        .submit-btn {
+            padding: 1.5rem 4rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--success), var(--bright-green));
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 30px rgba(39, 174, 96, 0.3);
+            animation: submitPulse 3s ease infinite;
+        }
+
+        @keyframes submitPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 20px 50px rgba(39, 174, 96, 0.5);
+        }
+
+        /* Loading animation */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid var(--text-light);
+            border-top: 6px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Fredoka', cursive;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .loading-subtext {
+            color: var(--text-medium);
+            font-size: 1.1rem;
+        }
+
+        /* Success animations */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--success), var(--bright-green));
+            color: white;
+            border-radius: 25px;
+            margin: 2rem 0;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: successSlideIn 0.8s ease;
+        }
+
+        @keyframes successSlideIn {
+            from { opacity: 0; transform: translateY(-50px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: successBounce 1s ease infinite;
+        }
+
+        @keyframes successBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* Responsive design - Mobile and tablet */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .main-content {
+                margin-left: 250px;
+                width: calc(100vw - 250px);
+                max-width: calc(100vw - 250px);
+            }
+
+            .profile-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-radius: 0;
+            }
+
+            .logout-btn {
+                position: relative;
+                bottom: auto;
+                margin: 1rem 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                margin-top: 0;
+                width: 100%;
+                max-width: 100%;
+                padding: 1rem;
+            }
+            
+            .page-container {
+                padding: 0;
+            }
+
+            .creation-options {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .states-controls {
+                justify-content: center;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .quick-actions {
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-types-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-header-content {
+                padding: 0 1rem;
+            }
+
+            .teacher-info > div {
+                display: none;
+            }
+
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-logo {
+                font-size: 1.4rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .creation-card {
+                padding: 2rem;
+            }
+            
+            .creation-title {
+                font-size: 1.5rem;
+            }
+
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Additional responsive fixes */
+        .quiz-form,
+        .quiz-types-container,
+        .states-section,
+        .content-section,
+        .welcome-card {
+            overflow-x: hidden;
+        }
+
+        /* Ensure no elements exceed container width */
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="floating-background">
+        <div class="floating-shape">🎓</div>
+        <div class="floating-shape">📚</div>
+        <div class="floating-shape">🗺️</div>
+        <div class="floating-shape">⭐</div>
+        <div class="floating-shape">🎯</div>
+        <div class="floating-shape">🏆</div>
+    </div>
+
+    <!-- Top Header -->
+   <div class="top-header">
+    <div class="top-header-content">
+        <div class="logo-section">
+            <div class="dashboard-logo">
+                <img src="./assets/logo.png" alt="QuiznLearn Logo" style="height:40px; vertical-align:middle; margin-right:8px;">
+                QuiznLearn Teacher Dashboard
+            </div>
+        </div>
+        <div class="teacher-info">
+            <div>
+                <div style="font-weight: 700; font-family: 'Fredoka', cursive;">Ms. Priya Teacher</div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">Geography Specialist</div>
+            </div>
+            <div class="teacher-avatar">👩‍🏫</div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">🌟 Teacher Zone</div>
+            <div style="font-size: 0.9rem; opacity: 0.8;">Create Amazing Geography Quizzes!</div>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-home"></i>
+                Dashboard Home
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('profile')">
+                <i class="fas fa-user-circle"></i>
+                My Profile
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('create-quiz')">
+                <i class="fas fa-plus-circle"></i>
+                Create Quiz
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('my-quizzes')">
+                <i class="fas fa-list-alt"></i>
+                My Quizzes
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('students')">
+                <i class="fas fa-users"></i>
+                Students
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('analytics')">
+                <i class="fas fa-chart-bar"></i>
+                Analytics
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+        </nav>
+        
+      
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-container">
+            <!-- Dashboard-only Welcome Card and Stats -->
+            <div id="dashboard-welcome" class="dashboard-only show">
+                <!-- Welcome Card -->
+                <div class="welcome-card">
+                    <h1 class="welcome-title">Welcome Back, Amazing Teacher! 🌟</h1>
+                    <p class="welcome-subtitle">Ready to create fun geography quizzes that make learning Indian States & Capitals exciting for your students?</p>
+                    <div class="quick-actions">
+                        <button class="quick-btn primary" onclick="showSection('create-quiz')">
+                            <i class="fas fa-magic"></i>
+                            Create New Quiz
+                        </button>
+                        <button class="quick-btn secondary" onclick="showSection('my-quizzes')">
+                            <i class="fas fa-eye"></i>
+                            View My Quizzes
+                        </button>
+                        <button class="quick-btn tertiary" onclick="showSection('students')">
+                            <i class="fas fa-users"></i>
+                            Check Students
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(45deg, var(--coral-pink), var(--light-purple)); color: white;">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Total Quizzes Created</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(45deg, var(--bright-green), var(--success)); color: white;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Happy Students</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(45deg, var(--sunny-yellow), var(--primary-blue)); color: white;">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-number">89%</div>
+                        <div class="stat-label">Average Score</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(45deg, var(--primary-blue), var(--sky-blue)); color: white;">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="stat-number">28</div>
+                        <div class="stat-label">Indian States Covered</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Section (Empty when welcome card is separate) -->
+            <div id="dashboard" class="content-section active">
+                <!-- Additional dashboard content can go here -->
+                <div style="text-align: center; padding: 2rem; color: var(--text-medium);">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--primary-blue);">📈</div>
+                    <h3 style="font-family: 'Fredoka', cursive; font-size: 1.8rem; margin-bottom: 1rem; color: var(--primary-blue);">Dashboard Overview</h3>
+                    <p style="font-size: 1.1rem;">Your complete teaching statistics and recent activity will be displayed here. Track your progress and student engagement!</p>
+                </div>
+            </div>
+
+            <!-- Enhanced Profile Section -->
+            <div id="profile" class="content-section">
+                <h2 class="section-title">👤 Teacher Profile Management</h2>
+                
+                <div class="profile-container">
+                    <!-- Left Profile Panel -->
+                    <div class="profile-left">
+                        <div class="profile-avatar-large">
+                            👩‍🏫
+                            <div class="avatar-upload">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        <div class="profile-name">Ms. Priya Teacher</div>
+                        <div class="profile-title">Geography Specialist | 8+ Years Experience</div>
+                        
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">24</div>
+                                <div class="profile-stat-label">Quizzes Created</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">156</div>
+                                <div class="profile-stat-label">Students Taught</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">89%</div>
+                                <div class="profile-stat-label">Success Rate</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">28</div>
+                                <div class="profile-stat-label">States Covered</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Profile Form -->
+                    <div class="profile-form">
+                        <form id="profile-form">
+                            <!-- Personal Information -->
+                            <div class="form-section">
+                                <div class="form-section-title">👤 Personal Information</div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-input" value="Priya" placeholder="Enter first name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-input" value="Teacher" placeholder="Enter last name">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" class="form-input" value="priya.teacher@school.edu" placeholder="Enter email address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-input" value="+91 9876543210" placeholder="Enter phone number">
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label">Address</label>
+                                    <textarea class="form-input textarea" placeholder="Enter your complete address">123 Education Street, Knowledge Colony, New Delhi - 110001, India</textarea>
+                                </div>
+                            </div>
+
+                            <!-- Professional Information -->
+                            <div class="form-section">
+                                <div class="form-section-title">🎓 Professional Details</div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">School/Institution</label>
+                                        <input type="text" class="form-input" value="Delhi Public School" placeholder="Enter school name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Subject Specialization</label>
+                                        <select class="form-input">
+                                            <option value="geography" selected>Geography</option>
+                                            <option value="social-studies">Social Studies</option>
+                                            <option value="history">History</option>
+                                            <option value="general-knowledge">General Knowledge</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Teaching Experience (Years)</label>
+                                        <input type="number" class="form-input" value="8" placeholder="Years of experience">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Qualification</label>
+                                        <input type="text" class="form-input" value="M.A. Geography, B.Ed" placeholder="Enter qualifications">
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label">Bio/About Yourself</label>
+                                    <textarea class="form-input textarea" placeholder="Tell us about your teaching philosophy and experience">Passionate geography teacher with 8+ years of experience in making learning fun and interactive. Specialized in Indian geography, world cultures, and innovative teaching methodologies. Love creating engaging educational content that helps students connect with the world around them.</textarea>
+                                </div>
+                            </div>
+
+                            <!-- Social & Contact Information -->
+                            <div class="form-section">
+                                <div class="form-section-title">🌐 Social & Contact</div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">LinkedIn Profile</label>
+                                        <input type="url" class="form-input" placeholder="https://linkedin.com/in/yourprofile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Twitter Handle</label>
+                                        <input type="text" class="form-input" placeholder="@yourusername">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Website/Blog</label>
+                                        <input type="url" class="form-input" placeholder="https://yourwebsite.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Emergency Contact</label>
+                                        <input type="tel" class="form-input" placeholder="Emergency contact number">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="resetProfileForm()">
+                                    <i class="fas fa-undo"></i>
+                                    Reset Changes
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Save Profile
+                                </button>
+                                <button type="button" class="btn btn-danger" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Quiz Section -->
+            <div id="create-quiz" class="content-section">
+                <h2 class="section-title">➕ Create Amazing Geography Quiz!</h2>
+                
+                <div class="creation-options">
+                    <div class="creation-card" onclick="showQuizCreation('manual')">
+                        <div class="creation-icon">✏️</div>
+                        <div class="creation-title">Manual Creation</div>
+                        <div class="creation-desc">Create questions yourself with full control over content, difficulty, and style for your students!</div>
+                    </div>
+                    
+                    <div class="creation-card ai-option" onclick="showQuizCreation('ai')">
+                        <div class="creation-icon">🤖</div>
+                        <div class="creation-title">AI Magic Creation</div>
+                        <div class="creation-desc">Let our smart AI create amazing questions about Indian States & Capitals based on your preferences!</div>
+                    </div>
+                </div>
+
+                <!-- Quiz Creation Container -->
+                <div id="quiz-creation-container" style="display: none;">
+                    <div class="quiz-types-container">
+                        <h3 class="quiz-types-title">🎯 Choose Quiz Types for Indian States & Capitals</h3>
+                        
+                        <div class="quiz-types-grid">
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'mcq')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">📝</div>
+                                    <div class="quiz-type-title">Multiple Choice Fun</div>
+                                </div>
+                                <p>Students choose the correct state or capital from given options</p>
+                                <small style="color: var(--text-light);">Example: What is the capital of Maharashtra?</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'match-pair')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">🔗</div>
+                                    <div class="quiz-type-title">Match the Friends</div>
+                                </div>
+                                <p>Connect Indian states with their capital cities like best friends!</p>
+                                <small style="color: var(--text-light);">Example: Match Punjab → Chandigarh</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'map-click')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">🗺️</div>
+                                    <div class="quiz-type-title">Map Detective</div>
+                                </div>
+                                <p>Click on the correct state or capital on interactive India map</p>
+                                <small style="color: var(--text-light);">Example: Click on Tamil Nadu on the map</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'fill-blanks')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">✏️</div>
+                                    <div class="quiz-type-title">Fill the Magic Blanks</div>
+                                </div>
+                                <p>Complete sentences about Indian states and their capitals</p>
+                                <small style="color: var(--text-light);">Example: The capital of Kerala is ___</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'true-false')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">✅</div>
+                                    <div class="quiz-type-title">True or False Adventure</div>
+                                </div>
+                                <p>Determine if facts about Indian states are true or false</p>
+                                <small style="color: var(--text-light);">Example: Mumbai is the capital of Maharashtra - True/False</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'drag-drop')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">🎯</div>
+                                    <div class="quiz-type-title">Drag & Drop Fun</div>
+                                </div>
+                                <p>Drag state names or capitals to their correct positions</p>
+                                <small style="color: var(--text-light);">Example: Drag "Jaipur" to "Rajasthan"</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'short-answer')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">📝</div>
+                                    <div class="quiz-type-title">Quick Answer Challenge</div>
+                                </div>
+                                <p>Type the correct name of state or capital city</p>
+                                <small style="color: var(--text-light);">Example: What is the capital of Assam?</small>
+                            </div>
+
+                            <div class="quiz-type-card" onclick="toggleQuizType(this, 'sequence-order')">
+                                <div class="quiz-type-header">
+                                    <div class="quiz-type-icon">🔢</div>
+                                    <div class="quiz-type-title">Order Challenge</div>
+                                </div>
+                                <p>Arrange states by size, population, or alphabetically</p>
+                                <small style="color: var(--text-light);">Example: Order states from largest to smallest</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Form -->
+                    <form id="quiz-form" class="quiz-form">
+                        <h3 class="form-title">📋 Quiz Details & Settings</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">🏷️ Quiz Title</label>
+                                <input type="text" class="form-input" placeholder="e.g., Fun with Northern States!" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">⏰ Duration (minutes)</label>
+                                <input type="number" class="form-input" value="30" min="5" max="120">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">📊 Difficulty Level</label>
+                                <select class="form-input">
+                                    <option value="easy">🟢 Easy (Class 4-6)</option>
+                                    <option value="medium" selected>🟡 Medium (Class 7-9)</option>
+                                    <option value="hard">🔴 Hard (Class 10+)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🔢 Number of Questions</label>
+                                <input type="number" class="form-input" value="20" min="5" max="50">
+                            </div>
+                        </div>
+
+                        <!-- Indian States Selection -->
+                        <div class="states-section">
+                            <h4 class="states-title">🇮🇳 Select Indian States to Include</h4>
+                            
+                            <div class="states-controls">
+                                <button type="button" class="control-btn all" onclick="selectAllStates()">Select All States</button>
+                                <button type="button" class="control-btn clear" onclick="clearAllStates()">Clear All</button>
+                                <button type="button" class="control-btn north" onclick="selectRegion('north')">Northern States</button>
+                                <button type="button" class="control-btn south" onclick="selectRegion('south')">Southern States</button>
+                            </div>
+
+                            <div class="states-grid" id="statesGrid">
+                                <!-- Northern States -->
+                                <div class="state-item">
+                                    <input type="checkbox" id="delhi" class="state-checkbox" value="Delhi">
+                                    <label for="delhi" class="state-label">🏛️ Delhi (New Delhi)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="punjab" class="state-checkbox" value="Punjab">
+                                    <label for="punjab" class="state-label">🌾 Punjab (Chandigarh)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="haryana" class="state-checkbox" value="Haryana">
+                                    <label for="haryana" class="state-label">🌾 Haryana (Chandigarh)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="himachal" class="state-checkbox" value="Himachal Pradesh">
+                                    <label for="himachal" class="state-label">🏔️ Himachal Pradesh (Shimla)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="uttarakhand" class="state-checkbox" value="Uttarakhand">
+                                    <label for="uttarakhand" class="state-label">🏔️ Uttarakhand (Dehradun)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="up" class="state-checkbox" value="Uttar Pradesh">
+                                    <label for="up" class="state-label">🕌 Uttar Pradesh (Lucknow)</label>
+                                </div>
+
+                                <!-- Western States -->
+                                <div class="state-item">
+                                    <input type="checkbox" id="rajasthan" class="state-checkbox" value="Rajasthan">
+                                    <label for="rajasthan" class="state-label">🏰 Rajasthan (Jaipur)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="gujarat" class="state-checkbox" value="Gujarat">
+                                    <label for="gujarat" class="state-label">🦁 Gujarat (Gandhinagar)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="maharashtra" class="state-checkbox" value="Maharashtra">
+                                    <label for="maharashtra" class="state-label">🏙️ Maharashtra (Mumbai)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="goa" class="state-checkbox" value="Goa">
+                                    <label for="goa" class="state-label">🏖️ Goa (Panaji)</label>
+                                </div>
+
+                                <!-- Southern States -->
+                                <div class="state-item">
+                                    <input type="checkbox" id="karnataka" class="state-checkbox" value="Karnataka">
+                                    <label for="karnataka" class="state-label">💻 Karnataka (Bengaluru)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="kerala" class="state-checkbox" value="Kerala">
+                                    <label for="kerala" class="state-label">🌴 Kerala (Thiruvananthapuram)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="tamil-nadu" class="state-checkbox" value="Tamil Nadu">
+                                    <label for="tamil-nadu" class="state-label">🏛️ Tamil Nadu (Chennai)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="andhra-pradesh" class="state-checkbox" value="Andhra Pradesh">
+                                    <label for="andhra-pradesh" class="state-label">🌶️ Andhra Pradesh (Amaravati)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="telangana" class="state-checkbox" value="Telangana">
+                                    <label for="telangana" class="state-label">💎 Telangana (Hyderabad)</label>
+                                </div>
+
+                                <!-- Eastern States -->
+                                <div class="state-item">
+                                    <input type="checkbox" id="west-bengal" class="state-checkbox" value="West Bengal">
+                                    <label for="west-bengal" class="state-label">🐟 West Bengal (Kolkata)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="bihar" class="state-checkbox" value="Bihar">
+                                    <label for="bihar" class="state-label">📚 Bihar (Patna)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="jharkhand" class="state-checkbox" value="Jharkhand">
+                                    <label for="jharkhand" class="state-label">⛏️ Jharkhand (Ranchi)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="odisha" class="state-checkbox" value="Odisha">
+                                    <label for="odisha" class="state-label">🏛️ Odisha (Bhubaneswar)</label>
+                                </div>
+
+                                <!-- Central States -->
+                                <div class="state-item">
+                                    <input type="checkbox" id="madhya-pradesh" class="state-checkbox" value="Madhya Pradesh">
+                                    <label for="madhya-pradesh" class="state-label">🐅 Madhya Pradesh (Bhopal)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="chhattisgarh" class="state-checkbox" value="Chhattisgarh">
+                                    <label for="chhattisgarh" class="state-label">🌳 Chhattisgarh (Raipur)</label>
+                                </div>
+
+                                <!-- Northeastern States -->
+                                <div class="state-item">
+                                    <input type="checkbox" id="assam" class="state-checkbox" value="Assam">
+                                    <label for="assam" class="state-label">🍃 Assam (Dispur)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="arunachal-pradesh" class="state-checkbox" value="Arunachal Pradesh">
+                                    <label for="arunachal-pradesh" class="state-label">🌅 Arunachal Pradesh (Itanagar)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="nagaland" class="state-checkbox" value="Nagaland">
+                                    <label for="nagaland" class="state-label">🎭 Nagaland (Kohima)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="manipur" class="state-checkbox" value="Manipur">
+                                    <label for="manipur" class="state-label">🏑 Manipur (Imphal)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="mizoram" class="state-checkbox" value="Mizoram">
+                                    <label for="mizoram" class="state-label">🎵 Mizoram (Aizawl)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="tripura" class="state-checkbox" value="Tripura">
+                                    <label for="tripura" class="state-label">🏰 Tripura (Agartala)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="meghalaya" class="state-checkbox" value="Meghalaya">
+                                    <label for="meghalaya" class="state-label">☁️ Meghalaya (Shillong)</label>
+                                </div>
+                                <div class="state-item">
+                                    <input type="checkbox" id="sikkim" class="state-checkbox" value="Sikkim">
+                                    <label for="sikkim" class="state-label">🏔️ Sikkim (Gangtok)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="submit-container">
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-magic"></i>
+                                Create Amazing Quiz! ✨
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Loading Container -->
+                    <div id="loading-container" class="loading-container">
+                        <div class="spinner"></div>
+                        <div class="loading-text">Creating Your Amazing Quiz! 🎯</div>
+                        <div class="loading-subtext">Adding fun questions about Indian States & Capitals...</div>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="success-message" class="success-message">
+                        <div class="success-icon">🎉</div>
+                        <h3 style="font-family: 'Fredoka', cursive; font-size: 2rem; margin-bottom: 1rem;">Quiz Created Successfully!</h3>
+                        <p style="font-size: 1.2rem; margin-bottom: 2rem;">Your amazing geography quiz is ready for students to enjoy!</p>
+                        <button class="quick-btn primary" onclick="showSection('my-quizzes')">
+                            <i class="fas fa-eye"></i>
+                            View My Quizzes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Quizzes Section -->
+            <div id="my-quizzes" class="content-section">
+                <h2 class="section-title">📚 My Amazing Quizzes</h2>
+                <div style="text-align: center; padding: 4rem; color: var(--text-medium);">
+                    <div style="font-size: 5rem; margin-bottom: 2rem; color: var(--primary-blue);">📋</div>
+                    <h3 style="font-family: 'Fredoka', cursive; font-size: 2rem; margin-bottom: 1rem; color: var(--primary-blue);">Your Quiz Collection</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">Manage all your created geography quizzes, view student responses, and track performance!</p>
+                    <button class="quick-btn primary" onclick="showSection('create-quiz')">
+                        <i class="fas fa-plus"></i>
+                        Create Your First Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Students Section -->
+            <div id="students" class="content-section">
+                <h2 class="section-title">👥 My Students</h2>
+                <div style="text-align: center; padding: 4rem; color: var(--text-medium);">
+                    <div style="font-size: 5rem; margin-bottom: 2rem; color: var(--bright-green);">👨‍🎓👩‍🎓</div>
+                    <h3 style="font-family: 'Fredoka', cursive; font-size: 2rem; margin-bottom: 1rem; color: var(--bright-green);">Student Management</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">View student profiles, track their learning progress, and celebrate their achievements!</p>
+                    <button class="quick-btn secondary">
+                        <i class="fas fa-user-plus"></i>
+                        Add Students
+                    </button>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="content-section">
+                <h2 class="section-title">📊 Learning Analytics</h2>
+                <div style="text-align: center; padding: 4rem; color: var(--text-medium);">
+                    <div style="font-size: 5rem; margin-bottom: 2rem; color: var(--sunny-yellow);">📈</div>
+                    <h3 style="font-family: 'Fredoka', cursive; font-size: 2rem; margin-bottom: 1rem; color: var(--sunny-yellow);">Performance Insights</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">Track student performance, identify learning gaps, and celebrate improvements in geography knowledge!</p>
+                    <button class="quick-btn tertiary">
+                        <i class="fas fa-chart-bar"></i>
+                        View Reports
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section">
+                <h2 class="section-title">⚙️ Dashboard Settings</h2>
+                <div style="text-align: center; padding: 4rem; color: var(--text-medium);">
+                    <div style="font-size: 5rem; margin-bottom: 2rem; color: var(--coral-pink);">🔧</div>
+                    <h3 style="font-family: 'Fredoka', cursive; font-size: 2rem; margin-bottom: 1rem; color: var(--coral-pink);">Customize Your Experience</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">Personalize your dashboard, set quiz preferences, and manage notification settings!</p>
+                    <button class="quick-btn" style="background: linear-gradient(45deg, var(--coral-pink), var(--light-purple)); color: white;">
+                        <i class="fas fa-cog"></i>
+                        Open Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedQuizTypes = [];
+        let currentCreationMode = '';
+
+        // Show specific section
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            // Handle dashboard-only welcome card and stats visibility
+            const dashboardWelcome = document.getElementById('dashboard-welcome');
+            if (sectionId === 'dashboard') {
+                dashboardWelcome.classList.add('show');
+            } else {
+                dashboardWelcome.classList.remove('show');
+            }
+
+            // Update active menu item
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Show quiz creation interface
+        function showQuizCreation(mode) {
+            currentCreationMode = mode;
+            document.getElementById('quiz-creation-container').style.display = 'block';
+            
+            // Smooth scroll to quiz types
+            setTimeout(() => {
+                document.getElementById('quiz-creation-container').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start' 
+                });
+            }, 100);
+        }
+
+        // Toggle quiz type selection
+        function toggleQuizType(element, type) {
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                selectedQuizTypes.push(type);
+            } else {
+                selectedQuizTypes = selectedQuizTypes.filter(t => t !== type);
+            }
+
+            // Show quiz form if at least one type is selected
+            const quizForm = document.getElementById('quiz-form');
+            if (selectedQuizTypes.length > 0) {
+                quizForm.classList.add('active');
+                setTimeout(() => {
+                    quizForm.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start' 
+                    });
+                }, 300);
+            } else {
+                quizForm.classList.remove('active');
+            }
+        }
+
+        // State selection functions
+        function selectAllStates() {
+            const checkboxes = document.querySelectorAll('#statesGrid .state-checkbox');
+            checkboxes.forEach(cb => cb.checked = true);
+        }
+
+        function clearAllStates() {
+            const checkboxes = document.querySelectorAll('#statesGrid .state-checkbox');
+            checkboxes.forEach(cb => cb.checked = false);
+        }
+
+        function selectRegion(region) {
+            clearAllStates();
+            
+            const regions = {
+                north: ['delhi', 'punjab', 'haryana', 'himachal', 'uttarakhand', 'up'],
+                south: ['karnataka', 'kerala', 'tamil-nadu', 'andhra-pradesh', 'telangana'],
+                east: ['west-bengal', 'bihar', 'jharkhand', 'odisha', 'assam'],
+                west: ['rajasthan', 'gujarat', 'maharashtra', 'goa']
+            };
+            
+            if (regions[region]) {
+                regions[region].forEach(stateId => {
+                    const checkbox = document.getElementById(stateId);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+        }
+
+        // Profile form functions
+        function resetProfileForm() {
+            const confirmed = confirm('🔄 Are you sure you want to reset all changes? This will restore your original profile information.');
+            if (confirmed) {
+                document.getElementById('profile-form').reset();
+                alert('✅ Profile form has been reset to original values!');
+            }
+        }
+
+        // Handle profile form submission
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate profile save
+            alert('🎉 Profile updated successfully! Your information has been saved.');
+        });
+
+        // Handle quiz form submission
+        document.getElementById('quiz-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect selected states
+            const selectedStates = [];
+            const stateCheckboxes = document.querySelectorAll('#statesGrid .state-checkbox:checked');
+            stateCheckboxes.forEach(cb => selectedStates.push(cb.value));
+            
+            if (selectedStates.length === 0) {
+                alert('🗺️ Please select at least one Indian state for your quiz!');
+                return;
+            }
+
+            if (selectedQuizTypes.length === 0) {
+                alert('🎯 Please select at least one quiz type!');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('quiz-form').style.display = 'none';
+            const loadingContainer = document.getElementById('loading-container');
+            loadingContainer.style.display = 'block';
+            
+            // Simulate quiz creation process
+            setTimeout(() => {
+                loadingContainer.style.display = 'none';
+                
+                const successMessage = document.getElementById('success-message');
+                successMessage.classList.add('show');
+                
+                // Scroll to success message
+                setTimeout(() => {
+                    successMessage.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center' 
+                    });
+                }, 200);
+                
+            }, 3000);
+        });
+
+        // Logout function - redirect to home.html
+        function logout() {
+            const confirmed = confirm('👋 Are you sure you want to logout from QuiznLearn Teacher Dashboard?');
+            if (confirmed) {
+                // Show loading message
+                alert('🎓 Thank you for using QuiznLearn! Redirecting to homepage... See you soon!');
+                
+                // Redirect to home.html with a small delay for better UX
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1000);
+            }
+        }
+
+        // Add sparkle effects on hover
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎓 QuiznLearn Teacher Dashboard Loaded Successfully!');
+            
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.stat-card, .creation-card, .quiz-type-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    // Add sparkle effect
+                    createSparkles(this);
+                });
+            });
+        });
+
+        function createSparkles(element) {
+            for(let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.innerHTML = '✨';
+                    sparkle.style.position = 'absolute';
+                    sparkle.style.left = Math.random() * element.offsetWidth + 'px';
+                    sparkle.style.top = Math.random() * element.offsetHeight + 'px';
+                    sparkle.style.pointerEvents = 'none';
+                    sparkle.style.fontSize = '1.5rem';
+                    sparkle.style.animation = 'sparkleFloat 2s ease forwards';
+                    
+                    element.style.position = 'relative';
+                    element.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 2000);
+                }, i * 200);
+            }
+        }
+
+        // Add sparkle animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkleFloat {
+                0% { transform: translateY(0px) scale(0); opacity: 1; }
+                50% { transform: translateY(-20px) scale(1); opacity: 1; }
+                100% { transform: translateY(-40px) scale(0); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
